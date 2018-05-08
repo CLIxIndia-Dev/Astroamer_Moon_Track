@@ -26,7 +26,7 @@
 
             <div class="rules-btn divPos"></div>
             <div class="demo-btn divPos"></div>
-            <a href="clue1.html" target="_self">
+            <a onclick="start();">
                 <div class="start-btn divPos"></div>
             </a>
 
@@ -64,6 +64,8 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
+<script src="js/moon.js"></script>
+<script src="js/cookie.js"></script>
 <script>
     $(function() {
         var myscore = 0;
@@ -95,7 +97,12 @@
             $('video')[0].pause();
             $('.demo-container').css('display', 'none');
         });
+        setuserdetail();
     });
+    function start() {
+        moon.start('te');
+        window.location.href = "clue1.html";
+    }
 
 </script>
 

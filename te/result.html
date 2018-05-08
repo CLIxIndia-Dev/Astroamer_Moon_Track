@@ -25,20 +25,23 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
+<script src="js/moon.js"></script>
+<script src="js/cookie.js"></script>
 <script>
     $(function() {
-
+        moon.readData();
         getScore();
 
         function getScore() {
-
-
             showScore = parseInt(localStorage.getItem("totalscore"));
             if (showScore >= 0 && showScore <= 9) {
-                $('.score1').html('మొత్తం స్కోరు<br><br>0' + showScore);
+                $('.score1').html('Total Score<br><br>0' + showScore);
+                moon.end('0' + showScore);
             } else {
-                $('.score1').html('మొత్తం స్కోరు<br><br>' + showScore);
+                $('.score1').html('Total Score<br><br>' + showScore);
+                moon.end(showScore);
             }
+            moon.updateScore(showScore);
         }
 
 
@@ -53,7 +56,7 @@
             $('#mymedal').attr('src', 'common/BRONZE_MEDAL.png');
             $('.resultText').html('మీరు కాంశ్య పతకం గెలిచారు!  మంచి పని. కొద్ది అభ్యాసంతో, మీరు స్వర్ణం గెలవచ్చు');
         } else if (showScore <= 5) {
-            $('.resultText').html('కొంచెం ఆచరణలో, మీరు బాగా చేయగలరు.');            
+            $('.resultText').html('కొంచెం ఆచరణలో, మీరు బాగా చేయగలరు.');
         }
         $("#mymedal").animate({
             opacity: 1

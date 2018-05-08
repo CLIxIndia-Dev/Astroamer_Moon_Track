@@ -42,7 +42,7 @@
             <div class="clueNo divPos c-blue">ఆధారం:2</div>
 
             <div class="clue-content c-blue divPos">
-                <p>దీపావళి నాడు ఒక చీకటి మరియు చంద్రుడు లేని రాత్రిలో, మనం దీపాలను వెలిగిస్తాము కావున మన ఇళ్లు  స్వాగతిస్తూ మరియు ప్రకాశంగా ఉంటాయి. చంద్రుడు కక్ష్యలో ఎక్కడ ఉంటాడు?</p>
+                <p>దీపావళి నాడు ఒక చీకటి మరియు చంద్రుడు లేని రాత్రిలో, మనం దీపాలను వెలిగిస్తాము కావున మన ఇళ్లు స్వాగతిస్తూ మరియు ప్రకాశంగా ఉంటాయి. చంద్రుడు కక్ష్యలో ఎక్కడ ఉంటాడు?</p>
             </div>
 
             <div class="clue-content1 c-white divPos">
@@ -77,14 +77,14 @@
             <div class="arc-7 mydropPos divPos" id="wrong_5-a"></div>
             <div class="arc-10 mydropPos divPos" id="wrong_6-a"></div>
 
-            <div class="moon-drop mydropPos drop1 divPos" id="wrong_7"></div>
-            <div class="moon-drop mydropPos drop2 divPos" id="wrong_1"></div>
-            <div class="moon-drop mydropPos drop3 divPos" id="wrong_2"></div>
-            <div class="moon-drop mydropPos drop4 divPos" id="wrong_3"></div>
-            <div class="moon-drop mydropPos drop5 divPos" id="wrong_4"></div>
-            <div class="moon-drop mydropPos drop6 divPos" id="wrong_5"></div>
-            <div class="moon-drop mydropPos drop7 divPos" id="right_1"></div>
-            <div class="moon-drop mydropPos drop8 divPos" id="wrong_6"></div>
+            <div class="moon-drop mydropPos drop1 divPos" id="wrong_7" data-place="moon-deg-270"></div>
+            <div class="moon-drop mydropPos drop2 divPos" id="wrong_1" data-place="moon-deg-315"></div>
+            <div class="moon-drop mydropPos drop3 divPos" id="wrong_2" data-place="moon-deg-0"></div>
+            <div class="moon-drop mydropPos drop4 divPos" id="wrong_3" data-place="moon-deg-45"></div>
+            <div class="moon-drop mydropPos drop5 divPos" id="wrong_4" data-place="moon-deg-90"></div>
+            <div class="moon-drop mydropPos drop6 divPos" id="wrong_5" data-place="moon-deg-135"></div>
+            <div class="moon-drop mydropPos drop7 divPos" id="right_1" data-place="moon-deg-180"></div>
+            <div class="moon-drop mydropPos drop8 divPos" id="wrong_6" data-place="moon-deg-225"></div>
 
 
             <div class="feedback-popup divPos">
@@ -119,14 +119,20 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
+<script src="js/moon.js"></script>
+<script src="js/cookie.js"></script>
 <script>
+    var myscore = 0;
+    var playattempt = 0;
+    var wrongNo = '';
+    var status = '';
+    var dragStart = 0;
+    var qid = 2;
+    var dropId = '';
+    var lng = 'te';
     $(function() {
-        var myscore = 0;
-        var attempt = 0;
-        var wrongNo = '';
-        var status = '';
-        var dragStart = 0;
-
+        moon.readData();
+        moon.addQuestion('దీపావళి నాడు ఒక చీకటి మరియు చంద్రుడు లేని రాత్రిలో, మనం దీపాలను వెలిగిస్తాము కావున మన ఇళ్లు స్వాగతిస్తూ మరియు ప్రకాశంగా ఉంటాయి. చంద్రుడు కక్ష్యలో ఎక్కడ ఉంటాడు?');
         getScore();
 
         $('.rules-btn1').click(function() {
@@ -171,6 +177,7 @@
                     $("#dvDest").html("");
                 }
                 ui.draggable.addClass("dropped");
+                dropId = $(this).attr('data-place');
                 var arr = $(this).attr('id').split('_');
                 status = arr[0];
                 if (status == 'wrong') {
@@ -197,7 +204,7 @@
                 dragStart = 2;
             }
             if (dragStart == 2) {
-                if (attempt == 0) {
+                if (playattempt == 0) {
                     if (status == 'wrong') {
                         if (wrongNo == '1' || wrongNo == '1-a') {
                             $('.popup-content').html('<p>మీరు ఎంపిక చేసుకున్న ప్రదేశంలో చంద్రుడు ఉన్నట్లైతే, మీరు ఆకాశంలో ఈ చిత్రంలో చంద్రుడిని సుమారుగా ఈ చిత్రంలో లాగా చూస్తారు. </p><img src="common/moon/moon_1.30.png"><p>సగం చంద్రుడు ఎల్లప్పుడూ సూర్యకాంతితో వెలుగుగా ఉంటాడు. అమావాస్య కొరకు వెలుతురుగా ఉండే భాగం ఏదీ భూమి నుంచి కనపడకుండా ఉండేట్లు  దీనిని ఉంచాలి.</p><p>కార్యకలాపం గురించి మీకు సహాయం కావాలంటే, డెమో బటన్‌ని క్లిక్ చేయండి. </p><p class="c-white">కొనసాగడానికి X క్లిక్ చేయండి. </p>');
@@ -214,26 +221,30 @@
                         } else if (wrongNo == '7' || wrongNo == '7-a') {
                             $('.popup-content').html('<p>మీరు ఎంపిక చేసుకున్న ప్రదేశంలో చంద్రుడు ఉన్నట్లైతే, మీరు ఆకాశంలో ఈ చిత్రంలో చంద్రుడిని సుమారుగా ఈ చిత్రంలో లాగా చూస్తారు. </p><img src="common/moon/moon_12.00.png"><p>సగం చంద్రుడు ఎల్లప్పుడూ సూర్యకాంతితో వెలుగుగా ఉంటాడు. అమావాస్య కొరకు వెలుతురుగా ఉండే భాగం ఏదీ భూమి నుంచి కనపడకుండా ఉండేట్లు  దీనిని ఉంచాలి.</p><p>కార్యకలాపం గురించి మీకు సహాయం కావాలంటే, డెమో బటన్‌ని క్లిక్ చేయండి. </p><p class="c-white">కొనసాగడానికి X క్లిక్ చేయండి. </p>');
                         }
+                        moon.addAnswer(dropId, false, playattempt);
                         $('.feedback-popup').css('display', 'block');
                     } else {
                         myscore = myscore + 2;
                         $('.popup-small-head').html('బాగాచేసారు!')
                         $('.popup-small-content').html('<p>భూమి నుండి  చంద్రుడి యొక్క వెలుతురుగా ఉండే భాగం ఏదీ కనపించనప్పుడు, మనం దీనిని అమావాస్యగా అంటాము.</p><p class="c-white">కొనసాగడానికి X క్లిక్ చేయండి. </p>');
                         $('.feedback-popup-small').css('display', 'block');
+                        moon.addAnswer(dropId, true, playattempt);
                     }
                 } else {
                     if (status == 'wrong') {
                         $('.popup-small-head').html('క్షమించండి!')
                         $('.popup-small-content').html('<p>భూమి నుండి  చంద్రుడి యొక్క వెలుతురుగా ఉండే భాగం ఏదీ కనపించనప్పుడు, మనం దీనిని అమావాస్యగా అంటాము.</p><p class="c-white">కొనసాగడానికి X క్లిక్ చేయండి. </p>');
                         $('.feedback-popup-small').css('display', 'block');
+                        moon.addAnswer(dropId, false, playattempt);
                     } else {
                         myscore = myscore + 1;
                         $('.popup-small-head').html('బాగాచేసారు!')
                         $('.popup-small-content').html('<p>భూమి నుండి  చంద్రుడి యొక్క వెలుతురుగా ఉండే భాగం ఏదీ కనపించనప్పుడు, మనం దీనిని అమావాస్యగా అంటాము.</p><p class="c-white">కొనసాగడానికి X క్లిక్ చేయండి. </p>');
                         $('.feedback-popup-small').css('display', 'block');
+                        moon.addAnswer(dropId, true, playattempt);
                     }
                 }
-                attempt++;
+                playattempt++;
                 dragStart = 0;
 
             }
@@ -241,7 +252,7 @@
         });
 
         $('.close-btn-popup').click(function() {
-            if (attempt == 1) {
+            if (playattempt == 1) {
                 if (status == 'wrong') {
                     $(".drag-moon").animate({
                         top: "135px",
@@ -278,7 +289,7 @@
                         opacity: 1
                     }, 2000, function() {
                         $('#dragMoon1').attr('src', 'common/moon/9-oclock-position.png');
-                        $('#dragMoon').attr('src', 'common/moon/DRAGABLE_MOON_WITH_GLOW_03_07.png');                        
+                        $('#dragMoon').attr('src', 'common/moon/DRAGABLE_MOON_WITH_GLOW_03_07.png');
                         $("#dragMoon").animate({
                             opacity: 0
                         }, 1000, function() {
@@ -321,7 +332,7 @@
             show6 = parseInt(localStorage.getItem("score6"));
             show7 = parseInt(localStorage.getItem("score7"));
             showScore = show1 + show2 + show3 + show4 + show5 + show6 + show7;
-            
+
             if (showScore >= 0 && showScore <= 9) {
                 $('.score').html('0' + showScore);
             } else {
@@ -350,6 +361,9 @@
 
         $('.next-btn').click(function() {
             if ($(this).css('opacity') == 1) {
+                myData.appData.attempt[qid-1].clue_endTime = timeStamp();
+                myData.appData.attempt[qid-1].createdAt = timeStamp();
+                moon.save();
                 window.open('clue3.html', '_self');
             }
         });
